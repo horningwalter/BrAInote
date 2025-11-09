@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrAInotes - Expert Linguistic Annotation & AI Content Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #059669;
+            --secondary: #3b82f6;
+            --accent: #eab308;
+        }
+        
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+
+        /* Logo Section */
+        .logo-showcase {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+        
+        /* Effects */
+        .logo-showcase::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(5, 150, 105, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -250px;
+            left: -250px;
+            animation: float1 20s ease-in-out infinite;
+        }
+        
+        .logo-showcase::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -200px;
+            right: -200px;
+            animation: float2 18s ease-in-out infinite;
+        }
+        
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, 100px) scale(1.1); }
+        }
+        
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-80px, -80px) scale(1.15); }
+        }
+        
+        /* Logo container */
+        .logo-container {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            /* Alterado: Começa menor e com mais desfoque */
+            transform: scale(0.6) translateY(50px); 
+            filter: blur(5px);
+            /* Alterado: Animação mais longa e com uma curva que dá um efeito de "snap" */
+            animation: logoEnter 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
+        }
+            
+        @keyframes logoEnter {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0); /* Remove o desfoque ao final */
+            }
+        }
+        
+        /* Logo shadow and glow */
+        .logo-container img {
+            /* Alterado: Aumenta o tamanho máximo para 800px */
+            max-width: 800px; 
+            width: 90vw;
+            height: auto;
+            filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.15)); /* Sombra um pouco mais forte */
+            transition: all 0.4s ease;
+        }
+
+        .logo-container:hover img {
+            filter: drop-shadow(0 30px 60px rgba(5, 150, 105, 0.3)); /* Sombra maior no hover */
+            transform: translateY(-8px); /* Move um pouco mais no hover */
+        }
+
+        /* Opcional: Ajuste o efeito de brilho do logo */
+        .logo-glow {
+            position: absolute;
+            inset: -30px; /* Brilho um pouco maior */
+            background: radial-gradient(circle at center, rgba(5, 150, 105, 0.2) 0%, transparent 75%);
+            border-radius: 50%;
+            opacity: 0;
+            /* Animação de pulso mais suave */
+            animation: glowPulse 4s ease-in-out infinite; 
+            z-index: -1;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 0.8; transform: scale(1.1); } /* Torna o pulso mais visível */
+        }
+
+        /* Novo: Efeito de texto */
+        .tagline {
+            /*... (Outras regras existentes) ...*/
+            opacity: 0;
+            transform: translateY(30px);
+            /* Novo atraso e duração para entrar depois do logo */
+            animation: textEnter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 1.8s forwards; 
+        }
+        
+        @keyframes textEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .tagline p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #1f2937;
+            font-weight: 500;
+            margin: 0;
+            background: linear-gradient(135deg, #059669 0%, #0284c7 50%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Decorative line */
+        .tagline::before {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #059669, transparent);
+            margin: 0 auto 2rem;
+            opacity: 0;
+            animation: lineEnter 0.8s ease-out 1.5s forwards;
+        }
+        
+        @keyframes lineEnter {
+            to { opacity: 1; }
+        }
+        
+        /* Decorative particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(135deg, #059669, #0284c7);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .particle:nth-child(2) {
+            top: 60%;
+            left: 85%;
+            animation-delay: 2s;
+        }
+        
+        .particle:nth-child(3) {
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        
+        .particle:nth-child(4) {
+            top: 30%;
+            right: 15%;
+            animation-delay: 6s;
+        }
+        
+        @keyframes particleFloat {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5);
+            }
+            25% {
+                opacity: 0.6;
+                transform: translateY(-30px) scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: translateY(-60px) scale(0.8);
+            }
+            75% {
+                opacity: 0.6;
+                transform: translateY(-30px) scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo-container img {
+                max-width: 500px;
+            }
+            
+            .tagline p {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-container img {
+                max-width: 350px;
+            }
+            
+            .tagline p {
+                font-size: 1.1rem;
+                line-height: 1.6;
+            }
+            
+            .logo-showcase {
+                padding: 1rem;
+            }
+        }
+
+        /* Scroll Down Indicator */
+        .scroll-indicator {
+            position: relative; /* Ajuste para centralizar abaixo da tagline */
+            z-index: 10;
+            margin-top: 4rem; /* Distância da tagline */
+            opacity: 0;
+            transform: translateY(20px);
+            /* Aparece depois da tagline */
+            animation: scrollIndicatorEnter 1s ease-out 2.5s forwards; 
+        }
+
+        @keyframes scrollIndicatorEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animação de pulsar/flutuar da seta */
+        .scroll-indicator svg {
+            display: block;
+            animation: bounceDown 2s infinite;
+        }
+
+        @keyframes bounceDown {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #059669 0%, #3b82f6 50%, #eab308 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .gradient-bg { background: linear-gradient(135deg, #059669 0%, #0284c7 100%); }
+        
+        .animated-gradient {
+            background: linear-gradient(270deg, #059669, #3b82f6, #eab308, #059669);
+            background-size: 800% 800%;
+            animation: gradientFlow 20s ease infinite;
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .card-3d {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .floating { animation: floating 6s ease-in-out infinite; }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .blob-1, .blob-2, .blob-3 {
+            border-radius: 0 !important;
+            animation: moveBlob 8s ease-in-out infinite;
+        }
+        
+        @keyframes moveBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, -5%) scale(1.1); }
+        }
+
+        .tech-grid {
+            background-image: 
+                linear-gradient(rgba(5, 150, 105, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 150, 105, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .service-card:hover .service-icon { transform: scale(1.1) rotate(5deg); }
+        .service-icon { transition: all 0.3s ease; }
+        
+        .lang-toggle {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 44px;
+        }
+        
+        .lang-toggle input { opacity: 0; width: 0; height: 0; }
+        
+        .lang-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+            transition: 0.4s;
+            border-radius: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .lang-slider:before {
+            position: absolute;
+            content: "";
+            height: 36px;
+            width: 52px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 34px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        input:checked + .lang-slider:before { transform: translateX(64px); }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #059669 0%, #0284c7 100%);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <img src="images/v4.png" alt="BrAInotes Logo" class="h-12 w-auto">
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors" id="nav-about">About</a>
+                    <a href="#team" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors" id="nav-team">Team</a>
+                    <a href="#services" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors" id="nav-services">Services</a>
+                    <a href="#why-us" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors" id="nav-why">Why Us</a>
+                    
+                    <label class="lang-toggle">
+                        <input type="checkbox" id="langToggle">
+                        <span class="lang-slider">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-text">PT</span>
+                        </span>
+                    </label>
+                    
+                    <a href="#contact" class="gradient-bg text-white px-6 py-2.5 rounded-full font-semibold transition-all hover:shadow-lg" id="nav-contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Logo Showcase Section -->
+    <section class="logo-showcase">
+        <!-- Particles -->
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        
+        <!-- Logo -->
+        <div class="logo-container">
+            <div class="logo-glow"></div>
+            <img src="images/v4.png" alt="BrAInotes Logo">
+        </div>
+        
+        <!-- Text -->
+        <div class="tagline">
+            <p id="tagline-text">Excellence in linguistic annotation and content review for artificial intelligence in Brazilian Portuguese</p>
+        </div>
+        <div class="scroll-indicator" id="scrollIndicator">
+            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-screen flex items-center">
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+            <div class="absolute top-100 w-96 h-96 bg-emerald-200/40 mix-blend-multiply filter blur-3xl blob-1"></div>
+            <div class="absolute top-40 w-96 h-96 bg-blue-200/40 mix-blend-multiply filter blur-3xl blob-2"></div>
+            <div class="absolute bottom-20 w-96 h-96 bg-yellow-200/40 mix-blend-multiply filter blur-3xl blob-3"></div>
+        </div> 
+        
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div class="inline-block mb-6">
+                        <span class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold" id="hero-badge">
+                            🇧🇷 Brazilian Portuguese Specialists
+                        </span>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                        <span id="hero-title-1">Linguistic</span><br>
+                        <span class="gradient-text" id="hero-title-2">Services for AI</span>
+                    </h1>
+                    
+                    <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed" id="hero-subtitle">
+                        We combine deep linguistic expertise with advanced AI technical knowledge to deliver the highest quality annotations and reviews for training and validating language models.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 mb-12">
+                        <a href="#contact" class="gradient-bg text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition text-center" id="hero-cta-1">
+                            Get Started
+                        </a>
+                        <a href="#services" class="bg-white text-gray-800 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition border-2 border-gray-200 text-center" id="hero-cta-2">
+                            Explore Services
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-emerald-600 mb-2">18+</div>
+                            <div class="text-gray-600 font-medium text-sm" id="stat-2">Years in Linguistics</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-2">8+</div>
+                            <div class="text-gray-600 font-medium text-sm" id="stat-1">Years in AI/ML</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-yellow-600 mb-2">100%</div>
+                            <div class="text-gray-600 font-medium text-sm" id="stat-3">PT-BR Native</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative hidden lg:block">
+                    <div class="floating">
+                        <div class="relative space-y-6">
+                            <div class="bg-gradient-to-br from-emerald-500 to-emerald-700 p-8 rounded-3xl shadow-2xl translate-x-12">
+                                <div class="text-white">
+                                    <div class="text-5xl mb-4">📝</div>
+                                    <h3 class="text-2xl font-bold mb-2" id="card-1-title">Annotation</h3>
+                                    <p class="opacity-90" id="card-1-desc">Precise linguistic markup</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-blue-500 to-blue-700 p-8 rounded-3xl shadow-2xl translate-x-12">
+                                <div class="text-white">
+                                    <div class="text-5xl mb-4">🔍</div>
+                                    <h3 class="text-2xl font-bold mb-2" id="card-2-title">Feedback & Correction</h3>
+                                    <p class="opacity-90" id="card-2-desc">Linguistic, contextual, and cultural analysis and refinement</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-yellow-500 to-yellow-700 p-8 rounded-3xl shadow-2xl translate-x-12">
+                                <div class="text-white">
+                                    <div class="text-5xl mb-4">✔️</div>
+                                    <h3 class="text-2xl font-bold mb-2" id="card-3-title">Validation</h3>
+                                    <p class="opacity-90" id="card-3-desc">Quality assurance</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+        <div class="absolute inset-0 tech-grid opacity-30"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6" id="about-title">Who We Are</h2>
+                <div class="w-32 h-1.5 animated-gradient mx-auto rounded-full mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" id="about-subtitle">
+                    The perfect synergy between linguistics and technology
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h3 class="text-4xl font-bold mb-8 text-gray-800" id="about-heading">Bridging Language & AI</h3>
+                    
+                    <div class="space-y-6 text-lg text-gray-600">
+                        <p id="about-p1">
+                            BrAInotes was born from the union of two complementary specialties: deep linguistic expertise and technical mastery in artificial intelligence. We are a company that combines 18 years of experience in education and linguistics with over 8 years of work in data science and machine learning.
+                        </p>
+                        
+                        <p id="about-p2">
+                            Our mission is to provide the highest quality linguistic annotations and content reviews for training and validating AI models, ensuring that each dataset delivered is perfectly prepared to enhance the performance of natural language systems.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-8 p-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-3xl shadow-xl">
+                        <p class="text-white font-semibold text-xl italic" id="about-quote">
+                            "We don't just offer annotation and review. We guarantee the best fit for training and validating NLP models."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6 reveal">
+                    <div class="bg-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100">
+                        <div class="text-5xl mb-4">🎯</div>
+                        <h4 class="font-bold text-xl mb-3 text-gray-800" id="value-1-title">Precision</h4>
+                        <p class="text-gray-600" id="value-1-desc">Scientific rigor and attention to every linguistic detail</p>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100">
+                        <div class="text-5xl mb-4">⚡</div>
+                        <h4 class="font-bold text-xl mb-3 text-gray-800" id="value-2-title">Efficiency</h4>
+                        <p class="text-gray-600" id="value-2-desc">Optimized processes with quality control</p>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100">
+                        <div class="text-5xl mb-4">🇧🇷</div>
+                        <h4 class="font-bold text-xl mb-3 text-gray-800" id="value-3-title">Brazilian Culture</h4>
+                        <p class="text-gray-600" id="value-3-desc">Deep knowledge of cultural and regional nuances</p>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100">
+                        <div class="text-5xl mb-4">🛠️</div>
+                        <h4 class="font-bold text-xl mb-3 text-gray-800" id="value-4-title">Customization</h4>
+                        <p class="text-gray-600" id="value-4-desc">Tailored solutions to meet your specific NLP needs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6" id="team-title">Our Team</h2>
+                <div class="w-32 h-1.5 animated-gradient mx-auto rounded-full mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" id="team-subtitle">
+                    Founders with robust academic credentials, professional experience, and a proven track record of expertise in linguistics and AI
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Walter -->
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden card-3d border border-gray-100 reveal">
+                    <div class="relative">
+                        <img src="images/w.jpg" class="w-full h-auto rounded-t-3xl">
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">W</div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-800">Walter José Horning Junior</h3>
+                                <p class="text-emerald-600 font-semibold text-lg" id="walter-role">Co-founder & Tech Lead</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">🎓</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="walter-edu-label">Education</p>
+                                    <p class="text-gray-600 text-sm" id="walter-edu">B.Sc. Computer Science - UFPR (2017)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">💼</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="walter-exp-label">Experience</p>
+                                    <p class="text-gray-600 text-sm" id="walter-exp">15+ years in computing (academic & professional) <br>8+ years as Data Scientist & AI/ML Engineer <br>4+ years as Python Instructor</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">🧩</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="walter-expertise-label">Expertise</p>
+                                    <p class="text-gray-600 text-sm" id="walter-expertise">AI & ML, bio-inspired algorithms, data analysis, research, and innovation bridging technology and business</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">🧠</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="walter-research-label">Research</p>
+                                    <p class="text-gray-600 text-sm" id="walter-research">Neuroscience cognitive processes & AI intersection</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 pt-6 border-t-2 border-gray-100">
+                            <p class="font-bold text-gray-800 mb-3 text-lg" id="walter-at-brainotes">At BrAInotes:</p>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li class="flex items-center gap-2" id="walter-resp-1">• Technical client interface</li>
+                                <li class="flex items-center gap-2" id="walter-resp-2">• Data integration & preparation</li>
+                                <li class="flex items-center gap-2" id="walter-resp-3">• Annotation tools management</li>
+                                <li class="flex items-center gap-2" id="walter-resp-4">• Automated quality control</li>
+                                <li class="flex items-center gap-2" id="walter-resp-5">• Technical validation & delivery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Elizangela -->
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden card-3d border border-gray-100 reveal">
+                    <div class="relative">
+                        <img src="images/irma.jpeg" class="w-full h-auto rounded-t-3xl">
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">E</div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-800">Elizangela Horning</h3>
+                                <p class="text-yellow-600 font-semibold text-lg" id="eli-role">Co-founder & Linguistic Lead</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">🎓</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="eli-edu-label">Education</p>
+                                    <p class="text-gray-600 text-sm" id="eli-edu">B.A. Portuguese Language & Literature - PUC-PR (2009)</p>
+                                    <p class="text-gray-600 text-xs mt-1" id="eli-postgrad">Postgraduate: <br>1. Portuguese & Brazilian Literature <br>2. Special Education</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">💼</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="eli-exp-label">Experience</p>
+                                    <p class="text-gray-600 text-sm" id="eli-exp">18+ years in education & linguistics</p>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">🧩</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="eli-expertise-label">Expertise</p>
+                                    <p class="text-gray-600 text-sm" id="eli-expertise">Grammar, syntax, semantics, stylistics, and cultural nuances</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="text-3xl">📚</div>
+                                <div>
+                                    <p class="font-bold text-gray-800 mb-1" id="eli-spec-label">Specialization</p>
+                                    <p class="text-gray-600 text-sm" id="eli-spec">Teaching & professional text review</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 pt-6 border-t-2 border-gray-100">
+                            <p class="font-bold text-gray-800 mb-3 text-lg" id="eli-at-brainotes">At BrAInotes:</p>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li class="flex items-center gap-2" id="eli-resp-1">• Linguistic annotation guidelines</li>
+                                <li class="flex items-center gap-2" id="eli-resp-2">• Specialized manual annotation</li>
+                                <li class="flex items-center gap-2" id="eli-resp-3">• Qualitative content validation</li>
+                                <li class="flex items-center gap-2" id="eli-resp-4">• Model output review</li>
+                                <li class="flex items-center gap-2" id="eli-resp-5">• Cultural appropriateness assurance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+        <div class="absolute inset-0 tech-grid opacity-30"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6" id="services-title">Our Services</h2>
+                <div class="w-32 h-1.5 animated-gradient mx-auto rounded-full mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" id="services-subtitle">
+                    Comprehensive solutions for high-quality linguistic data preparation and review
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-3xl shadow-xl card-3d service-card border border-gray-100 reveal">
+                    <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-3xl flex items-center justify-center mb-6 shadow-lg service-icon">
+                        <span class="text-4xl">📝</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-1-title">Linguistic Annotation</h3>
+                    <p class="text-gray-600 mb-4" id="service-1-intro">Precise linguistic markup including:</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Sentiment and intent analysis</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Entity and relation identification</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Grammar, syntax, and semantics annotation</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Tone, style, and register analysis</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Paraphrase and similarity labeling</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Coreference and discourse annotation</span></li>
+
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-8 rounded-3xl shadow-xl card-3d service-card border border-gray-100 reveal">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl flex items-center justify-center mb-6 shadow-lg service-icon">
+                        <span class="text-4xl">✅</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-2-title">Quality Validation</h3>
+                    <p class="text-gray-600 mb-4" id="service-2-intro">Comprehensive model output review ensuring:</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Text naturalness and fluency</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Clarity, coherence, and consistency</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Semantic accuracy and fidelity</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Compliance with project guidelines and tone</span></li>
+    
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-8 rounded-3xl shadow-xl card-3d service-card border border-gray-100 reveal">
+                    <div class="w-20 h-20 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-3xl flex items-center justify-center mb-6 shadow-lg service-icon">
+                        <span class="text-4xl">📚</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-3-title">Linguistic Guidelines</h3>
+                    <p class="text-gray-600 mb-4" id="service-3-intro">Technical documentation covering:</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-yellow-600 font-bold">•</span><span id="service-3-item-1">Spelling & grammar rules</span></li>
+                        <li class="flex items-start gap-2"><span class="text-yellow-600 font-bold">•</span><span id="service-3-item-2">Textual coherence guidelines</span></li>
+                        <li class="flex items-start gap-2"><span class="text-yellow-600 font-bold">•</span><span id="service-3-item-3">Tone & register standards</span></li>
+                        <li class="flex items-start gap-2"><span class="text-yellow-600 font-bold">•</span><span id="service-3-item-4">Cultural appropriateness</span></li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-8 rounded-3xl shadow-xl card-3d service-card border border-gray-100 reveal">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-3xl flex items-center justify-center mb-6 shadow-lg service-icon">
+                        <span class="text-4xl">⚙️</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-4-title">Data Integration</h3>
+                    <p class="text-gray-600 mb-4" id="service-4-intro">Complete technical preparation:</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Dataset structuring and schema definition</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Format conversion (JSON, CSV, Parquet, etc.)</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Data normalization and standardization</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Deduplication and integrity validation</span></li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-8 rounded-3xl shadow-xl card-3d service-card border border-gray-100 reveal">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-red-700 rounded-3xl flex items-center justify-center mb-6 shadow-lg service-icon">
+                        <span class="text-4xl">🔬</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-5-title">Quality Control</h3>
+                    <p class="text-gray-600 mb-4" id="service-5-intro">Excellence assurance through:</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-red-600 font-bold">•</span><span id="service-5-item-1">Consistency measurement scripts</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-600 font-bold">•</span><span id="service-5-item-2">Inter-annotator agreement analysis</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-600 font-bold">•</span><span id="service-5-item-3">Systematic error detection</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-600 font-bold">•</span><span id="service-5-item-4">Automated validation workflows</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-600 font-bold">•</span><span id="service-5-item-5">Manual double-check review for critical samples</span></li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-8 rounded-3xl shadow-xl card-3d service-card border border-gray-100 reveal">
+                    <div class="w-20 h-20 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-3xl flex items-center justify-center mb-6 shadow-lg service-icon">
+                        <span class="text-4xl">🔄</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-6-title">Management & Delivery</h3>
+                    <p class="text-gray-600 mb-4" id="service-6-intro">Complete process management:</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-indigo-600 font-bold">•</span><span id="service-6-item-1">Annotation platform configuration and user management</span></li>
+                        <li class="flex items-start gap-2"><span class="text-indigo-600 font-bold">•</span><span id="service-6-item-2">Version control and update tracking</span></li>
+                        <li class="flex items-start gap-2"><span class="text-indigo-600 font-bold">•</span><span id="service-6-item-3">Quality and delivery traceability</span></li>
+                        <li class="flex items-start gap-2"><span class="text-indigo-600 font-bold">•</span><span id="service-6-item-4">Standardized and validated data packages</span></li>
+                    </ul>      
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section id="why-us" class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6" id="why-title">Why Choose BrAInotes?</h2>
+                <div class="w-32 h-1.5 animated-gradient mx-auto rounded-full mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" id="why-subtitle">
+                    Our competitive advantages in AI linguistic annotation and review
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100 reveal">
+                    <div class="text-6xl mb-6">🎯</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="why-1-title">Unique Dual Expertise</h3>
+                    <p class="text-gray-600" id="why-1-desc">Rare combination of deep academic linguistics with advanced AI technical expertise</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100 reveal">
+                    <div class="text-6xl mb-6">🇧🇷</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="why-2-title">Native BR Portuguese</h3>
+                    <p class="text-gray-600" id="why-2-desc">Native speakers with deep understanding of cultural, regional and sociolinguistic nuances of Brazil</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100 reveal">
+                    <div class="text-6xl mb-6">📊</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="why-3-title">Guaranteed Quality</h3>
+                    <p class="text-gray-600" id="why-3-desc">Multiple validation layers: specialized human + automated with rigorous metrics</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100 reveal">
+                    <div class="text-6xl mb-6">⚡</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="why-4-title">Optimized Pipeline</h3>
+                    <p class="text-gray-600" id="why-4-desc">Efficient workflow with modern tools and quality control at every stage</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100 reveal">
+                    <div class="text-6xl mb-6">🔬</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="why-5-title">Scientific Rigor</h3>
+                    <p class="text-gray-600" id="why-5-desc">Research-based approach with consistent methodology and detailed documentation</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl card-3d border border-gray-100 reveal">
+                    <div class="text-6xl mb-6">🤝</div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800" id="why-6-title">Close Partnership</h3>
+                    <p class="text-gray-600" id="why-6-desc">Personalized service and genuine commitment to results</p>
+                </div>
+            </div>
+            
+            <div class="reveal">
+                <div class="relative overflow-hidden rounded-3xl shadow-2xl">
+                    <div class="absolute inset-0 animated-gradient"></div>
+                    <div class="relative p-12 md:p-16 text-center text-white">
+                        <h3 class="text-4xl md:text-5xl font-bold mb-6" id="cta-title">Ready to Elevate Your Training Data Quality?</h3>
+                        <p class="text-xl md:text-2xl mb-10 opacity-90 max-w-4xl mx-auto" id="cta-subtitle">
+                            We don't just offer annotation and review. We guarantee the best fit for training and validating AI models.
+                        </p>
+                        <a href="#contact" class="inline-block bg-white text-emerald-600 px-12 py-5 rounded-full font-bold text-xl hover:bg-gray-100 transition shadow-2xl" id="cta-button">
+                            Let's Talk
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-gradient-to-br from-gray-50 to-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6" id="contact-title">Let's Connect</h2>
+                <div class="w-32 h-1.5 animated-gradient mx-auto rounded-full mb-6"></div>
+                <p class="text-xl text-gray-600" id="contact-subtitle">
+                    Get in touch to discuss how we can help your AI project
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-gray-100 reveal">
+                <div class="grid md:grid-cols-2 gap-12 items-center justify-items-center mb-12">
+                    
+                    <!-- Contact Information -->
+                    <div class="flex flex-col items-center text-center">
+                    <h3 class="font-bold text-2xl mb-6 text-gray-800" id="contact-info-title">Contact Information</h3>
+
+                    <div class="space-y-6 w-full max-w-md">
+                        <div class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition">
+                        <div class="text-3xl">📧</div>
+                        <div>
+                            <p class="font-bold text-gray-800 mb-1" id="contact-email-label">Email</p>
+                            <a href="/cdn-cgi/l/email-protection#422a2d302c2b2c256c35232e36273002252f232b2e6c212d2f" class="text-emerald-600 hover:text-emerald-700 font-medium"><span class="__cf_email__" data-cfemail="234b4c514d4a4d440d54424f57465163444e424a4f0d404c4e">[email&#160;protected]</span></a>
+                        </div>
+                        </div>
+
+                        <div class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition">
+                        <div class="text-3xl">📱</div>
+                        <div>
+                            <p class="font-bold text-gray-800 mb-1" id="contact-phone-label">Phone / WhatsApp</p>
+                            <p class="text-gray-600" id="contact-phone">+55 41 99849-7081</p>
+                        </div>
+                        </div>
+
+                        <div class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition">
+                        <div class="text-3xl">📍</div>
+                        <div>
+                            <p class="font-bold text-gray-800 mb-1" id="contact-location-label">Location</p>
+                            <p class="text-gray-600">Curitiba, Paraná - Brazil</p>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Request a Proposal -->
+                    <div class="bg-gradient-to-br from-emerald-50 to-blue-50 rounded-2xl p-8 text-center border border-emerald-100 shadow-sm">
+                    <h3 class="font-bold text-2xl mb-4 text-gray-800" id="contact-proposal-title">Request a Proposal</h3>
+                    <p class="text-gray-600 mb-6" id="contact-proposal-text">
+                        Send us an email describing your project and we'll respond within 24 business hours with a customized proposal.
+                    </p>
+                    <a href="/cdn-cgi/l/email-protection#fd9e9293899c8992bd9f8f9c94939289988ed39e9290d39f8fc28e889f97989e89c0ad8f9297989e89ddb4938c88948f84ddd0ddbf8fbcb4939289988e" class="inline-block bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition" id="contact-proposal-button">
+                        Send Email
+                    </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-2">
+                    <img src="images/v3.png" alt="BrAInotes Logo" class="w-48 mb-22" id="footer-logo">
+                    <p class="text-gray-400 mb-6 text-lg" id="footer-desc">
+                        Excellence in linguistic annotation and content review for artificial intelligence in Brazilian Portuguese.
+                    </p>
+                    <p class="text-gray-500">
+                        © 2025 BrAInotes. <span id="footer-rights">All rights reserved.</span>
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-6" id="footer-links-title">Quick Links</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#about" class="hover:text-emerald-400 transition" id="footer-link-1">About</a></li>
+                        <li><a href="#team" class="hover:text-emerald-400 transition" id="footer-link-2">Team</a></li>
+                        <li><a href="#services" class="hover:text-emerald-400 transition" id="footer-link-3">Services</a></li>
+                        <li><a href="#why-us" class="hover:text-emerald-400 transition" id="footer-link-4">Why Us</a></li>
+                        <li><a href="#contact" class="hover:text-emerald-400 transition" id="footer-link-5">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-6" id="footer-spec-title">Specialties</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li id="footer-spec-1">Brazilian Portuguese</li>
+                        <li id="footer-spec-2">NLP Annotation</li>
+                        <li id="footer-spec-3">Machine Learning</li>
+                        <li id="footer-spec-4">Applied Linguistics</li>
+                        <li id="footer-spec-5">Data Science</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+                <p id="footer-built">
+                    Built with AI expertise and passion for the Portuguese language
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Complete translation dictionary
+        const translations = {
+            'nav-about': { en: 'About', pt: 'Sobre' },
+            'nav-team': { en: 'Team', pt: 'Equipe' },
+            'nav-services': { en: 'Services', pt: 'Serviços' },
+            'nav-why': { en: 'Why Us', pt: 'Diferenciais' },
+            'nav-contact': { en: 'Contact', pt: 'Contato' },
+
+            'tagline-text': { 
+                en: 'Excellence in linguistic annotation and content review for artificial intelligence in Brazilian Portuguese', 
+                pt: 'Excelência em anotação linguística e revisão de conteúdo para inteligência artificial em português brasileiro'
+            },
+            'hero-badge': { en: '🇧🇷 Brazilian Portuguese Specialists', pt: '🇧🇷 Especialistas em Português Brasileiro' },
+            'hero-title-1': { en: 'Linguistic', pt: 'Serviços' },
+            'hero-title-2': { en: 'Services for AI', pt: 'de Linguagem para IA' },
+            'hero-subtitle': { en: 'We combine deep linguistic expertise with advanced AI technical knowledge to deliver the highest quality annotations and reviews for training and validating language models.', pt: 'Combinamos expertise linguística profunda com conhecimento técnico avançado em IA para entregar anotações e revisões da mais alta qualidade para treinamento e validação de modelos de linguagem.' },
+            'hero-cta-1': { en: 'Get Started', pt: 'Fale Conosco' },
+            'hero-cta-2': { en: 'Explore Services', pt: 'Conheça os Serviços' },
+            'stat-1': { en: 'Years in AI/ML', pt: 'Anos em IA/ML' },
+            'stat-2': { en: 'Years in Linguistics', pt: 'Anos em Linguística' },
+            'stat-3': { en: 'PT-BR Native', pt: 'Português BR' },
+            
+            'card-1-title': { en: 'Annotation', pt: 'Anotação' },
+            'card-1-desc': { en: 'Precise linguistic markup', pt: 'Marcação linguística precisa' },
+            'card-2-title': { en: 'Feedback & Correction', pt: 'Feedback e Correção' },
+            'card-2-desc': { en: 'Linguistic, contextual, and cultural analysis and refinement', pt: 'Análise e refinamento linguístico, contextual e cultural' },
+            'card-3-title': { en: 'Validation', pt: 'Validação' },
+            'card-3-desc': { en: 'Quality assurance', pt: 'Garantia de qualidade' },
+            
+            'about-title': { en: 'Who We Are', pt: 'Quem Somos' },
+            'about-subtitle': { en: 'The perfect synergy between linguistics and technology', pt: 'A perfeita sinergia entre linguística e tecnologia' },
+            'about-heading': { en: 'Bridging Language & AI', pt: 'Unindo Linguagem e IA' },
+            'about-p1': { en: 'BrAInotes was born from the union of two complementary specialties: deep linguistic expertise and technical mastery in artificial intelligence. We are a company that combines 18 years of experience in education and linguistics with over 8 years of work in data science and machine learning.', pt: 'A BrAInotes nasceu da união de duas especialidades complementares: expertise linguística profunda e domínio técnico em inteligência artificial. Somos uma empresa que combina 18 anos de experiência em educação e linguística com mais de 8 anos de atuação em ciência de dados e machine learning.' },
+            'about-p2': { en: 'Our mission is to provide the highest quality linguistic annotations and content reviews for training and validating AI models, ensuring that each dataset delivered is perfectly prepared to enhance the performance of natural language systems.', pt: 'Nossa missão é fornecer anotações linguísticas e revisões de conteúdo da mais alta qualidade para treinamento e validação de modelos de IA, garantindo que cada dataset entregue esteja perfeitamente preparado para impulsionar o desempenho de sistemas de linguagem natural.' },
+            'about-quote': { en: '"We don\'t just offer annotation and review. We guarantee the best fit for training and validating NLP models."', pt: '"Não oferecemos apenas anotação e revisão. Garantimos a melhor adequação para treino e validação de modelos de NLP."' },
+            
+            'value-1-title': { en: 'Precision', pt: 'Precisão' },
+            'value-1-desc': { en: 'Scientific rigor and attention to every linguistic detail', pt: 'Rigor científico e atenção a cada detalhe linguístico' },
+            'value-2-title': { en: 'Efficiency', pt: 'Eficiência' },
+            'value-2-desc': { en: 'Optimized processes with quality control', pt: 'Processos otimizados com controle de qualidade' },
+            'value-3-title': { en: 'Brazilian Culture', pt: 'Cultura Brasileira' },
+            'value-3-desc': { en: 'Deep knowledge of cultural and regional nuances', pt: 'Conhecimento profundo das nuances culturais e regionais' },
+            'value-4-title': { en: 'Customization', pt: 'Personalização' },
+            'value-4-desc': { en: 'Tailored solutions to meet your specific NLP needs', pt: 'Soluções personalizadas para atender suas necessidades específicas de NLP' },
+            
+            'team-title': { en: 'Our Team', pt: 'Nossa Equipe' },
+            'team-subtitle': { en: 'Founders with robust academic credentials, professional experience, and a proven track record of expertise in linguistics and AI', pt: 'Fundadores com credenciais acadêmicas robustas, experiência profissional e histórico comprovado de expertise em linguística e IA' },
+            
+            'walter-role': { en: 'Co-founder & Tech Lead', pt: 'Co-fundador & Tech Lead' },
+            'walter-edu-label': { en: 'Education', pt: 'Formação' },
+            'walter-edu': { en: 'B.Sc. Computer Science - UFPR (2017)', pt: 'Bacharel em Ciência da Computação - UFPR (2017)' },
+            'walter-exp-label': { en: 'Experience', pt: 'Experiência' },
+            'walter-exp': { en: '15+ years in computing (academic & professional) <br>8+ years as Data Scientist & AI/ML Engineer <br>4+ years as Python Instructor', pt: '15+ anos em computação (acadêmica e profissional) <br>8+ anos como Cientista de Dados e Engenheiro de IA/ML <br>4+ anos como Instrutor de Python' },
+            'walter-expertise-label': { en: 'Expertise', pt: 'Especialização' },
+            'walter-expertise': { en: 'AI & ML, bio-inspired algorithms, data analysis, research, and innovation bridging technology and business', pt: 'IA e ML, algoritmos bioinspirados, análise de dados, pesquisa e inovação unindo tecnologia e negócios' },
+            'walter-research-label': { en: 'Research', pt: 'Pesquisa' },
+            'walter-research': { en: 'Neuroscience cognitive processes & AI intersection', pt: 'Processos cognitivos da neurociência e IA' },
+            'walter-at-brainotes': { en: 'At BrAInotes:', pt: 'Na BrAInotes:' },
+            'walter-resp-1': { en: '• Technical client interface', pt: '• Interface técnica com clientes' },
+            'walter-resp-2': { en: '• Data integration & preparation', pt: '• Integração e preparação de dados' },
+            'walter-resp-3': { en: '• Annotation tools management', pt: '• Gestão de ferramentas de anotação' },
+            'walter-resp-4': { en: '• Automated quality control', pt: '• Controle de qualidade automatizado' },
+            'walter-resp-5': { en: '• Technical validation & delivery', pt: '• Validação técnica e entrega' },
+            
+            'eli-role': { en: 'Co-founder & Linguistic Lead', pt: 'Co-fundadora & Linguistic Lead' },
+            'eli-edu-label': { en: 'Education', pt: 'Formação' },
+            'eli-edu': { en: 'B.A. Portuguese Language & Literature - PUC-PR (2009)', pt: 'Bacharelado em Letras - Português (PUC-PR, 2009)' },
+            'eli-postgrad': { en: 'Postgraduate: <br>1. Portuguese & Brazilian Literature <br>2. Special Education', pt: 'Pós-graduação: <br>1. Língua Portuguesa e Literatura <br>2. Educação Especial' },
+            'eli-exp-label': { en: 'Experience', pt: 'Experiência' },
+            'eli-exp': { en: '18+ years in education & linguistics', pt: '18+ anos em educação e linguística' },
+            'eli-spec-label': { en: 'Specialization', pt: 'Áreas de Atuação' },
+            'eli-spec': { en: 'Teaching & professional text review', pt: 'Ensino e revisão textual profissional' },
+            'eli-expertise-label': { en: 'Expertise', pt: 'Especialização' },
+            'eli-expertise': { en: 'Grammar, syntax, semantics, stylistics, and cultural nuances', pt: 'Gramática, sintaxe, semântica, estilística e nuances culturais' },
+            'eli-at-brainotes': { en: 'At BrAInotes:', pt: 'Na BrAInotes:' },
+            'eli-resp-1': { en: '• Linguistic annotation guidelines', pt: '• Criação de guias de anotação linguística' },
+            'eli-resp-2': { en: '• Specialized manual annotation', pt: '• Anotação manual especializada' },
+            'eli-resp-3': { en: '• Qualitative content validation', pt: '• Validação qualitativa de conteúdo' },
+            'eli-resp-4': { en: '• Model output review', pt: '• Revisão de outputs de modelos' },
+            'eli-resp-5': { en: '• Cultural appropriateness assurance', pt: '• Garantia de adequação cultural' },
+            
+            'services-title': { en: 'Our Services', pt: 'Nossos Serviços' },
+            'services-subtitle': { en: 'Comprehensive solutions for high-quality linguistic data preparation and review', pt: 'Soluções completas para preparação e revisão de dados linguísticos de alta qualidade' },
+            
+            'service-1-title': { en: 'Linguistic Annotation', pt: 'Anotação Linguística' },
+            'service-1-intro': { en: 'Precise linguistic markup including:', pt: 'Marcação linguística precisa incluindo:' },
+            'service-1-item-1': { en: 'Sentiment & intent analysis', pt: 'Análise de sentimento e intenção' },
+            'service-1-item-2': { en: 'Entity & relation identification', pt: 'Identificação de entidades e relações' },
+            'service-1-item-3': { en: 'Tone & register analysis', pt: 'Análise de tom e registro' },
+            'service-1-item-4': { en: 'Cultural adaptation', pt: 'Adequação cultural' },
+            
+            'service-2-title': { en: 'Quality Validation', pt: 'Validação de Qualidade' },
+            'service-2-intro': { en: 'Comprehensive model output review ensuring:', pt: 'Revisão completa de outputs garantindo:' },
+            'service-2-item-1': { en: 'Text naturalness & fluency', pt: 'Naturalidade e fluência do texto' },
+            'service-2-item-2': { en: 'Clarity & coherence', pt: 'Clareza e coerência' },
+            'service-2-item-3': { en: 'Semantic fidelity', pt: 'Fidelidade semântica' },
+            'service-2-item-4': { en: 'Guideline compliance', pt: 'Conformidade com guias' },
+            
+            'service-3-title': { en: 'Linguistic Guidelines', pt: 'Guias Linguísticos' },
+            'service-3-intro': { en: 'Technical documentation covering:', pt: 'Documentação técnica abrangendo:' },
+            'service-3-item-1': { en: 'Spelling & grammar rules', pt: 'Regras de ortografia e gramática' },
+            'service-3-item-2': { en: 'Textual coherence guidelines', pt: 'Diretrizes de coerência textual' },
+            'service-3-item-3': { en: 'Tone & register standards', pt: 'Padrões de tom e registro' },
+            'service-3-item-4': { en: 'Cultural appropriateness', pt: 'Adequação cultural' },
+            
+            'service-4-title': { en: 'Data Integration', pt: 'Integração de Dados' },
+            'service-4-intro': { en: 'Complete technical preparation:', pt: 'Preparação técnica completa:' },
+            'service-4-item-1': { en: 'Dataset structuring', pt: 'Estruturação de datasets' },
+            'service-4-item-2': { en: 'Format conversion (JSON, CSV, Parquet)', pt: 'Conversão de formatos (JSON, CSV, Parquet)' },
+            'service-4-item-3': { en: 'Normalization & encoding', pt: 'Normalização e encoding' },
+            'service-4-item-4': { en: 'Anonymization & deduplication', pt: 'Anonimização e deduplicação' },
+            
+            'service-5-title': { en: 'Quality Control', pt: 'Controle de Qualidade' },
+            'service-5-intro': { en: 'Excellence assurance through:', pt: 'Garantia de excelência através de:' },
+            'service-5-item-1': { en: 'Consistency measurement scripts', pt: 'Scripts de medição de consistência' },
+            'service-5-item-2': { en: 'Inter-annotator agreement analysis', pt: 'Análise de concordância entre anotadores' },
+            'service-5-item-3': { en: 'Systematic error detection', pt: 'Detecção de erros sistemáticos' },
+            'service-5-item-4': { en: 'Automated validation workflows', pt: 'Fluxos de validação automatizados' },
+            'service-5-item-5': { en: 'Manual double-check review for critical samples', pt: 'Revisão manual dupla de amostras críticas' },
+            
+            'service-6-title': { en: 'Management & Delivery', pt: 'Gestão e Entrega' },
+            'service-6-intro': { en: 'Complete process management:', pt: 'Processo completo de gerenciamento:' },
+            'service-6-item-1': { en: 'Annotation platform configuration and user management', pt: 'Configuração de plataforma e gestão de usuários' },
+            'service-6-item-2': { en: 'Version control and update tracking', pt: 'Controle de versões e rastreamento de atualizações' },
+            'service-6-item-3': { en: 'Quality and delivery traceability', pt: 'Rastreabilidade de qualidade e entrega' },
+            'service-6-item-4': { en: 'Standardized and validated data packages', pt: 'Pacotes de dados padronizados e validados' },
+            
+            'why-title': { en: 'Why Choose BrAInotes?', pt: 'Por Que Escolher a BrAInotes?' },
+            'why-subtitle': { en: 'Our competitive advantages in AI linguistic annotation and review', pt: 'Nossos diferenciais competitivos em anotação linguística e revisão para IA' },
+            'why-1-title': { en: 'Unique Dual Expertise', pt: 'Expertise Dual Única' },
+            'why-1-desc': { en: 'Rare combination of deep academic linguistics with advanced AI/ML technical expertise', pt: 'Combinação rara de linguística acadêmica profunda com expertise técnica avançada em IA/ML' },
+            'why-2-title': { en: 'Native BR Portuguese', pt: 'Português BR Nativo' },
+            'why-2-desc': { en: 'Native speakers with deep understanding of cultural, regional and sociolinguistic nuances of Brazil', pt: 'Falantes nativos com compreensão profunda das nuances culturais, regionais e sociolinguísticas do Brasil' },
+            'why-3-title': { en: 'Guaranteed Quality', pt: 'Qualidade Garantida' },
+            'why-3-desc': { en: 'Multiple validation layers: specialized human + automated with rigorous metrics', pt: 'Múltiplas camadas de validação: humana especializada + automatizada com métricas rigorosas' },
+            'why-4-title': { en: 'Optimized Pipeline', pt: 'Pipeline Otimizado' },
+            'why-4-desc': { en: 'Efficient workflow with modern tools and quality control at every stage', pt: 'Fluxo de trabalho eficiente com ferramentas modernas e controle em cada etapa' },
+            'why-5-title': { en: 'Scientific Rigor', pt: 'Rigor Científico' },
+            'why-5-desc': { en: 'Research-based approach with consistent methodology and detailed documentation', pt: 'Abordagem baseada em pesquisa com metodologia consistente e documentação detalhada' },
+            'why-6-title': { en: 'Close Partnership', pt: 'Parceria Próxima' },
+            'why-6-desc': { en: 'Personalized service and genuine commitment to results', pt: 'Atendimento personalizado e comprometimento genuíno com resultados' },
+            
+            'cta-title': { en: 'Ready to Elevate Your Training Data Quality?', pt: 'Pronto para Elevar a Qualidade dos Seus Dados?' },
+            'cta-subtitle': { en: 'We don\'t just offer annotation and review. We guarantee the best fit for training and validating AI models.', pt: 'Não oferecemos apenas anotação e revisão. Garantimos a melhor adequação para treino e validação de modelos de IA.' },
+            'cta-button': { en: 'Let\'s Talk', pt: 'Vamos Conversar' },
+            
+            'contact-title': { en: 'Let\'s Connect', pt: 'Vamos Conversar' },
+            'contact-subtitle': { en: 'Get in touch to discuss how we can help your AI project', pt: 'Entre em contato para discutir como podemos ajudar seu projeto de IA' },
+            'contact-info-title': { en: 'Contact Information', pt: 'Informações de Contato' },
+            'contact-email-label': { en: 'Email', pt: 'Email' },
+            'contact-phone-label': { en: 'Phone / WhatsApp', pt: 'Telefone / WhatsApp' },
+            'contact-phone': { en: '+55 41 99849-7081', pt: '+55 41 99849-7081' },
+            'contact-location-label': { en: 'Location', pt: 'Localização' },
+            'contact-hours-label': { en: 'Business Hours', pt: 'Horário' },
+            'contact-hours': { en: 'Mon-Fri: 9am-6pm (GMT-3)', pt: 'Seg-Sex: 9h-18h (GMT-3)' },
+            'contact-services-title': { en: 'Our Services', pt: 'Nossos Serviços' },
+            'contact-service-1': { en: 'Linguistic Annotation', pt: 'Anotação Linguística' },
+            'contact-service-2': { en: 'AI Content Review', pt: 'Revisão de Conteúdo de IA' },
+            'contact-service-3': { en: 'Dataset Validation', pt: 'Validação de Datasets' },
+            'contact-service-4': { en: 'Linguistic Guidelines', pt: 'Guias Linguísticos' },
+            'contact-service-5': { en: 'NLP Consulting', pt: 'Consultoria em NLP' },
+            'contact-proposal-title': { en: 'Request a Proposal', pt: 'Solicite uma Proposta' },
+            'contact-proposal-text': { en: 'Send us an email describing your project and we\'ll respond within 24 business hours with a customized proposal.', pt: 'Envie-nos um email descrevendo seu projeto e responderemos em até 24 horas úteis com uma proposta personalizada.' },
+            'contact-proposal-button': { en: 'Send Email', pt: 'Enviar Email' },
+            
+            'footer-desc': { en: 'Excellence in linguistic annotation and content review for artificial intelligence in Brazilian Portuguese.', pt: 'Excelência em anotação linguística e revisão de conteúdo para inteligência artificial em português brasileiro.' },
+            'footer-rights': { en: 'All rights reserved.', pt: 'Todos os direitos reservados.' },
+            'footer-links-title': { en: 'Quick Links', pt: 'Links Rápidos' },
+            'footer-link-1': { en: 'About', pt: 'Sobre' },
+            'footer-link-2': { en: 'Team', pt: 'Equipe' },
+            'footer-link-3': { en: 'Services', pt: 'Serviços' },
+            'footer-link-4': { en: 'Why Us', pt: 'Diferenciais' },
+            'footer-link-5': { en: 'Contact', pt: 'Contato' },
+            'footer-spec-title': { en: 'Specialties', pt: 'Especialidades' },
+            'footer-spec-1': { en: 'Brazilian Portuguese', pt: 'Português Brasileiro' },
+            'footer-spec-2': { en: 'NLP Annotation', pt: 'Anotação NLP' },
+            'footer-spec-3': { en: 'Machine Learning', pt: 'Machine Learning' },
+            'footer-spec-4': { en: 'Applied Linguistics', pt: 'Linguística Aplicada' },
+            'footer-spec-5': { en: 'Data Science', pt: 'Data Science' },
+            'footer-built': { en: 'Built with AI expertise and passion for the Portuguese language', pt: 'Desenvolvido com expertise em IA e paixão pela língua portuguesa' }
+        };
+        
+        // Language switcher
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('langToggle');
+            
+            function switchLanguage(lang) {
+                Object.keys(translations).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element && translations[key][lang]) {
+                        element.innerHTML = translations[key][lang];
+                    }
+                });
+                localStorage.setItem('preferredLanguage', lang);
+                document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
+            }
+            
+            toggle.addEventListener('change', function() {
+                switchLanguage(this.checked ? 'pt' : 'en');
+            });
+            
+            // Initialize
+            const saved = localStorage.getItem('preferredLanguage');
+            const browser = navigator.language.toLowerCase();
+            const initial = saved || (browser.startsWith('pt') ? 'pt' : 'en');
+            
+            if (initial === 'pt') {
+                toggle.checked = true;
+                switchLanguage('pt');
+            }
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Navbar shadow
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.pageYOffset > 10) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
+            }
+        });
+        
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        function revealOnScroll() {
+            reveals.forEach(element => {
+                const top = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (top < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+                // Oculta o indicador de rolagem após o início da rolagem
+        window.addEventListener('scroll', function() {
+            const indicator = document.getElementById('scrollIndicator');
+            if (indicator) {
+                if (window.pageYOffset > 50) { // Oculta após rolar 50px
+                    indicator.style.opacity = '0';
+                    indicator.style.pointerEvents = 'none'; // Impede interação
+                } else {
+                    // Mantém a opacidade definida pela animação CSS inicial
+                    indicator.style.opacity = ''; 
+                    indicator.style.pointerEvents = 'auto';
+                }
+            }
+        });
+        
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+    </script>
+</body>
+</html>
