@@ -394,6 +394,93 @@
             background: linear-gradient(180deg, #059669 0%, #0284c7 100%);
             border-radius: 5px;
         }
+
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 40;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #374151;
+            font-weight: 500;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            background: #f9fafb;
+            color: #059669;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #374151;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .lang-toggle {
+                width: 100px;
+                height: 38px;
+            }
+            
+            .lang-slider {
+                font-size: 12px;
+                padding: 0 10px;
+            }
+            
+            .lang-slider:before {
+                height: 30px;
+                width: 44px;
+                left: 4px;
+                bottom: 4px;
+            }
+            
+            input:checked + .lang-slider:before { 
+                transform: translateX(52px); 
+            }
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -760,12 +847,12 @@
                     <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-1-title">Linguistic Annotation</h3>
                     <p class="text-gray-600 mb-4" id="service-1-intro">Precise linguistic markup including:</p>
                     <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Sentiment and intent analysis</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Entity and relation identification</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Grammar, syntax, and semantics annotation</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Tone, style, and register analysis</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Paraphrase and similarity labeling</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Coreference and discourse annotation</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-1-item-1">Sentiment and intent analysis</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-1-item-2">Entity and relation identification</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-1-item-3">Grammar, syntax, and semantics annotation</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-1-item-4">Tone, style, and register analysis</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-1-item-5">Paraphrase and similarity labeling</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-1-item-6">Coreference and discourse annotation</span></li>
 
                     </ul>
                 </div>
@@ -777,11 +864,11 @@
                     <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-2-title">Quality Validation</h3>
                     <p class="text-gray-600 mb-4" id="service-2-intro">Comprehensive model output review ensuring:</p>
                     <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Text naturalness and fluency</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Clarity, coherence, and consistency</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Semantic accuracy and fidelity</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Compliance with project guidelines and tone</span></li>
-    
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-2-item-1">Text naturalness and fluency</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-2-item-2">Clarity, coherence, and consistency</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-2-item-3">Semantic accuracy and fidelity</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-2-item-4">Compliance with project guidelines and tone</span></li>
+
                     </ul>
                 </div>
                 
@@ -806,10 +893,10 @@
                     <h3 class="text-2xl font-bold mb-4 text-gray-800" id="service-4-title">Data Integration</h3>
                     <p class="text-gray-600 mb-4" id="service-4-intro">Complete technical preparation:</p>
                     <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Dataset structuring and schema definition</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Format conversion (JSON, CSV, Parquet, etc.)</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Data normalization and standardization</span></li>
-                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span>Deduplication and integrity validation</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-4-item-1">Dataset structuring and schema definition</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-4-item-2">Format conversion (JSON, CSV, Parquet, etc.)</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-4-item-3">Data normalization and standardization</span></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-600 font-bold">•</span><span id="service-4-item-4">Deduplication and integrity validation</span></li>
                     </ul>
                 </div>
                 
@@ -930,28 +1017,31 @@
                     <h3 class="font-bold text-2xl mb-6 text-gray-800" id="contact-info-title">Contact Information</h3>
 
                     <div class="space-y-6 w-full max-w-md">
-                        <div class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition">
-                        <div class="text-3xl">📧</div>
-                        <div>
-                            <p class="font-bold text-gray-800 mb-1" id="contact-email-label">Email</p>
-                            <a href="/cdn-cgi/l/email-protection#422a2d302c2b2c256c35232e36273002252f232b2e6c212d2f" class="text-emerald-600 hover:text-emerald-700 font-medium"><span class="__cf_email__" data-cfemail="234b4c514d4a4d440d54424f57465163444e424a4f0d404c4e">[email&#160;protected]</span></a>
-                        </div>
-                        </div>
-
-                        <div class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition">
-                        <div class="text-3xl">📱</div>
-                        <div>
-                            <p class="font-bold text-gray-800 mb-1" id="contact-phone-label">Phone / WhatsApp</p>
-                            <p class="text-gray-600" id="contact-phone">+55 41 99849-7081</p>
-                        </div>
+                        <!-- Email - Clicável -->
+                        <div onclick="window.location.href='mailto:horning.walter@gmail.com'" class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer hover:bg-emerald-50">
+                            <img src="images/email_logo.png" alt="Email" class="w-12 h-12 object-contain">
+                            <div>
+                                <p class="font-bold text-gray-800 mb-1" id="contact-email-label">Email</p>
+                                <p class="text-emerald-600 hover:text-emerald-700 font-medium">horning.walter@gmail.com</p>
+                            </div>
                         </div>
 
-                        <div class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition">
-                        <div class="text-3xl">📍</div>
-                        <div>
-                            <p class="font-bold text-gray-800 mb-1" id="contact-location-label">Location</p>
-                            <p class="text-gray-600">Curitiba, Paraná - Brazil</p>
+                        <!-- WhatsApp - Clicável -->
+                        <div onclick="window.open('https://wa.me/5541998497081', '_blank')" class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer hover:bg-green-50">
+                            <img src="images/whatsapp.png" alt="WhatsApp" class="w-12 h-12 object-contain">
+                            <div>
+                                <p class="font-bold text-gray-800 mb-1" id="contact-phone-label">Phone / WhatsApp</p>
+                                <p class="text-gray-600" id="contact-phone">+55 41 99849-7081</p>
+                            </div>
                         </div>
+
+                        <!-- LinkedIn - Clicável -->
+                        <div onclick="window.open('https://www.linkedin.com/in/walter-horning-junior', '_blank')" class="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer hover:bg-blue-50">
+                            <img src="images/linkedin_logo.png" alt="LinkedIn" class="w-12 h-12 object-contain">
+                            <div>
+                                <p class="font-bold text-gray-800 mb-1" id="contact-linkedin-label">LinkedIn</p>
+                                <p class="text-blue-600">walter-horning-junior</p>
+                            </div>
                         </div>
                     </div>
                     </div>
@@ -962,7 +1052,7 @@
                     <p class="text-gray-600 mb-6" id="contact-proposal-text">
                         Send us an email describing your project and we'll respond within 24 business hours with a customized proposal.
                     </p>
-                    <a href="/cdn-cgi/l/email-protection#fd9e9293899c8992bd9f8f9c94939289988ed39e9290d39f8fc28e889f97989e89c0ad8f9297989e89ddb4938c88948f84ddd0ddbf8fbcb4939289988e" class="inline-block bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition" id="contact-proposal-button">
+                    <a href="mailto:horning.walter@gmail.com" class="inline-block bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition" id="contact-proposal-button">
                         Send Email
                     </a>
                     </div>
@@ -1104,18 +1194,20 @@
             
             'service-1-title': { en: 'Linguistic Annotation', pt: 'Anotação Linguística' },
             'service-1-intro': { en: 'Precise linguistic markup including:', pt: 'Marcação linguística precisa incluindo:' },
-            'service-1-item-1': { en: 'Sentiment & intent analysis', pt: 'Análise de sentimento e intenção' },
-            'service-1-item-2': { en: 'Entity & relation identification', pt: 'Identificação de entidades e relações' },
-            'service-1-item-3': { en: 'Tone & register analysis', pt: 'Análise de tom e registro' },
-            'service-1-item-4': { en: 'Cultural adaptation', pt: 'Adequação cultural' },
-            
+            'service-1-item-1': { en: 'Sentiment and intent analysis', pt: 'Análise de sentimento e intenção' },
+            'service-1-item-2': { en: 'Entity and relation identification', pt: 'Identificação de entidades e relações' },
+            'service-1-item-3': { en: 'Grammar, syntax, and semantics annotation', pt: 'Anotação de gramática, sintaxe e semântica' },
+            'service-1-item-4': { en: 'Tone, style, and register analysis', pt: 'Análise de tom, estilo e registro' },
+            'service-1-item-5': { en: 'Paraphrase and similarity labeling', pt: 'Rotulagem de paráfrase e similaridade' },
+            'service-1-item-6': { en: 'Coreference and discourse annotation', pt: 'Anotação de correferência e discurso' },
+
             'service-2-title': { en: 'Quality Validation', pt: 'Validação de Qualidade' },
             'service-2-intro': { en: 'Comprehensive model output review ensuring:', pt: 'Revisão completa de outputs garantindo:' },
-            'service-2-item-1': { en: 'Text naturalness & fluency', pt: 'Naturalidade e fluência do texto' },
-            'service-2-item-2': { en: 'Clarity & coherence', pt: 'Clareza e coerência' },
-            'service-2-item-3': { en: 'Semantic fidelity', pt: 'Fidelidade semântica' },
-            'service-2-item-4': { en: 'Guideline compliance', pt: 'Conformidade com guias' },
-            
+            'service-2-item-1': { en: 'Text naturalness and fluency', pt: 'Naturalidade e fluência textual' },
+            'service-2-item-2': { en: 'Clarity, coherence, and consistency', pt: 'Clareza, coerência e consistência' },
+            'service-2-item-3': { en: 'Semantic accuracy and fidelity', pt: 'Precisão e fidelidade semântica' },
+            'service-2-item-4': { en: 'Compliance with project guidelines and tone', pt: 'Conformidade com diretrizes e tom do projeto' },
+
             'service-3-title': { en: 'Linguistic Guidelines', pt: 'Guias Linguísticos' },
             'service-3-intro': { en: 'Technical documentation covering:', pt: 'Documentação técnica abrangendo:' },
             'service-3-item-1': { en: 'Spelling & grammar rules', pt: 'Regras de ortografia e gramática' },
@@ -1125,10 +1217,10 @@
             
             'service-4-title': { en: 'Data Integration', pt: 'Integração de Dados' },
             'service-4-intro': { en: 'Complete technical preparation:', pt: 'Preparação técnica completa:' },
-            'service-4-item-1': { en: 'Dataset structuring', pt: 'Estruturação de datasets' },
-            'service-4-item-2': { en: 'Format conversion (JSON, CSV, Parquet)', pt: 'Conversão de formatos (JSON, CSV, Parquet)' },
-            'service-4-item-3': { en: 'Normalization & encoding', pt: 'Normalização e encoding' },
-            'service-4-item-4': { en: 'Anonymization & deduplication', pt: 'Anonimização e deduplicação' },
+            'service-4-item-1': { en: 'Dataset structuring and schema definition', pt: 'Estruturação de datasets e definição de schemas' },
+            'service-4-item-2': { en: 'Format conversion (JSON, CSV, Parquet, etc.)', pt: 'Conversão de formatos (JSON, CSV, Parquet, etc.)' },
+            'service-4-item-3': { en: 'Data normalization and standardization', pt: 'Normalização e padronização de dados' },
+            'service-4-item-4': { en: 'Deduplication and integrity validation', pt: 'Deduplicação e validação de integridade' },
             
             'service-5-title': { en: 'Quality Control', pt: 'Controle de Qualidade' },
             'service-5-intro': { en: 'Excellence assurance through:', pt: 'Garantia de excelência através de:' },
