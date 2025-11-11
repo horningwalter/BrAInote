@@ -509,7 +509,33 @@
                     
                     <a href="#contact" class="gradient-bg text-white px-6 py-2.5 rounded-full font-semibold transition-all hover:shadow-lg" id="nav-contact">Contact</a>
                 </div>
+
+                <!-- Mobile Menu Button & Language Toggle -->
+                <div class="flex md:hidden items-center gap-3">
+                    <label class="lang-toggle">
+                        <input type="checkbox" id="langToggle">
+                        <span class="lang-slider">
+                            <span class="lang-text">EN</span>
+                            <span class="lang-text">PT</span>
+                        </span>
+                    </label>
+                    
+                    <div class="hamburger" id="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#about" id="nav-about-mobile">About</a>
+            <a href="#team" id="nav-team-mobile">Team</a>
+            <a href="#services" id="nav-services-mobile">Services</a>
+            <a href="#why-us" id="nav-why-mobile">Why Us</a>
+            <a href="#contact" id="nav-contact-mobile">Contact</a>
         </div>
     </nav>
 
