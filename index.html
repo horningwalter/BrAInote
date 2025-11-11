@@ -513,7 +513,7 @@
                 <!-- Mobile Menu Button & Language Toggle -->
                 <div class="flex md:hidden items-center gap-3">
                     <label class="lang-toggle">
-                        <input type="checkbox" id="langToggle">
+                        <input type="checkbox" id="langToggleMobile">
                         <span class="lang-slider">
                             <span class="lang-text">EN</span>
                             <span class="lang-text">PT</span>
@@ -1048,7 +1048,7 @@
                             <img src="images/email_logo.png" alt="Email" class="w-12 h-12 object-contain">
                             <div>
                                 <p class="font-bold text-gray-800 mb-1" id="contact-email-label">Email</p>
-                                <p class="text-emerald-600 hover:text-emerald-700 font-medium">horning.walter@gmail.com</p>
+                                <p class="text-emerald-600 hover:text-emerald-700 font-medium"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="442c2b362a2d2a236a332528302136042329252d286a272b29">[email&#160;protected]</a></p>
                             </div>
                         </div>
 
@@ -1133,7 +1133,7 @@
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Complete translation dictionary
         const translations = {
             'nav-about': { en: 'About', pt: 'Sobre' },
@@ -1348,6 +1348,81 @@
             }
         });
         
+        
+        // Language switcher
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleDesktop = document.getElementById('langToggle');
+            const toggleMobile = document.getElementById('langToggleMobile');
+            
+            function switchLanguage(lang) {
+                Object.keys(translations).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element && translations[key][lang]) {
+                        element.innerHTML = translations[key][lang];
+                    }
+                });
+                localStorage.setItem('preferredLanguage', lang);
+                document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
+            }
+            
+            // Desktop toggle
+            toggleDesktop.addEventListener('change', function() {
+                const lang = this.checked ? 'pt' : 'en';
+                switchLanguage(lang);
+                toggleMobile.checked = this.checked; // Sincroniza com mobile
+            });
+            
+            // Mobile toggle
+            toggleMobile.addEventListener('change', function() {
+                const lang = this.checked ? 'pt' : 'en';
+                switchLanguage(lang);
+                toggleDesktop.checked = this.checked; // Sincroniza com desktop
+            });
+            
+            // Initialize
+            const saved = localStorage.getItem('preferredLanguage');
+            const browser = navigator.language.toLowerCase();
+            const initial = saved || (browser.startsWith('pt') ? 'pt' : 'en');
+            
+            if (initial === 'pt') {
+                toggleDesktop.checked = true;
+                toggleMobile.checked = true;
+                switchLanguage('pt');
+            }
+        });
+        
+        // Mobile Menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileLinks = document.querySelectorAll('.mobile-menu a');
+            
+            // Toggle menu
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideMenu = mobileMenu.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideMenu && !isClickOnHamburger && mobileMenu.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        });
+        
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -1383,24 +1458,23 @@
                 }
             });
         }
-
-                // Oculta o indicador de rolagem após o início da rolagem
+        
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Initial check
+        
+        // Scroll indicator
         window.addEventListener('scroll', function() {
             const indicator = document.getElementById('scrollIndicator');
             if (indicator) {
-                if (window.pageYOffset > 50) { // Oculta após rolar 50px
+                if (window.pageYOffset > 50) {
                     indicator.style.opacity = '0';
-                    indicator.style.pointerEvents = 'none'; // Impede interação
+                    indicator.style.pointerEvents = 'none';
                 } else {
-                    // Mantém a opacidade definida pela animação CSS inicial
-                    indicator.style.opacity = ''; 
+                    indicator.style.opacity = '1';
                     indicator.style.pointerEvents = 'auto';
                 }
             }
         });
-        
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll();
     </script>
 </body>
 </html>
